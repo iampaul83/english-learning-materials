@@ -56,6 +56,9 @@
           <!-- <p class="text-xs text-white/80">加入主畫面可全螢幕瀏覽</p> -->
         </div>
       </div>
+      <div class="flex-none pr-2">
+        <button x-show="!installed" class="btn btn-sm bg-white/15 border-white/20 hover:bg-white/25 text-white" @click="guideOpen = true">安裝說明</button>
+      </div>
     </header>
 
     <!-- Content -->
@@ -139,6 +142,46 @@
       <p x-show="!filtered('課本').length && !filtered('故事').length" class="text-center opacity-70 pt-10">沒有符合搜尋的項目</p>
     </main>
 
+    <!-- 安裝說明 Modal -->
+    <div class="modal" x-show="guideOpen" x-transition @keydown.escape.window="guideOpen=false">
+      <div class="modal-box max-w-md">
+        <h3 class="font-bold text-lg mb-2">安裝到主畫面</h3>
+
+        <!-- 平台切換 -->
+        <div class="tabs tabs-boxed mb-3">
+          <a class="tab" :class="{'tab-active': guideTab==='android'}" @click="guideTab='android'">Android</a>
+          <a class="tab" :class="{'tab-active': guideTab==='ios'}" @click="guideTab='ios'">iOS</a>
+        </div>
+
+        <!-- Android 步驟 -->
+        <div x-show="guideTab==='android'" class="space-y-2">
+          <ol class="list-decimal list-inside space-y-1">
+            <li>請使用 <b>Chrome</b> 開啟本頁。</li>
+            <li>點右上角 <b>⋮</b> 選單。</li>
+            <li>選 <b>安裝應用程式</b>（或 <b>加到主畫面</b>）。</li>
+            <li>確認名稱後，按 <b>安裝</b>。</li>
+          </ol>
+          <p class="text-xs opacity-70">提示：已安裝的話，從主畫面開啟會是全螢幕顯示。</p>
+        </div>
+
+        <!-- iOS 步驟 -->
+        <div x-show="guideTab==='ios'" class="space-y-2">
+          <ol class="list-decimal list-inside space-y-1">
+            <li>請使用 <b>Safari</b> 開啟本頁。</li>
+            <li>點底部的 <b>分享</b>（□ 上箭頭）。</li>
+            <li>選 <b>加入主畫面</b>。</li>
+            <li>按 <b>加入</b> 完成。</li>
+          </ol>
+          <p class="text-xs opacity-70">若看不到選項，請向下捲動分享單中的項目。</p>
+        </div>
+
+        <div class="modal-action">
+          <button class="btn" @click="guideOpen=false">關閉</button>
+        </div>
+      </div>
+      <div class="modal-backdrop" @click="guideOpen=false"></div>
+    </div>
+
     <!-- Footer / PWA 提示區 -->
     <footer class="safe px-4 py-3 text-center text-xs opacity-70">© 2025 英文學習資源</footer>
   </div>
@@ -153,10 +196,28 @@
     function app(){
       return {
         scrolled: false,
+        guideOpen: false,
+        guideTab: 'android',
+        installed: false,
         init() {
           window.addEventListener('scroll', () => {
             this.scrolled = window.scrollY > 0;
           });
+          const ua = navigator.userAgent || navigator.vendor || window.opera;
+          if (/iphone|ipad|ipod/i.test(ua)) this.guideTab = 'ios';
+          else this.guideTab = 'android';
+
+          // Detect installed/standalone
+          const mq = window.matchMedia('(display-mode: standalone)');
+          this.installed = mq.matches || (window.navigator.standalone === true);
+          // Listen for changes (e.g., iOS back to browser)
+          try {
+            mq.addEventListener('change', (e) => { this.installed = e.matches; });
+          } catch(_) {
+            // Safari <16 fallback
+            mq.addListener?.((e) => { this.installed = e.matches; });
+          }
+          window.addEventListener('appinstalled', () => { this.installed = true; });
         },
         filtered(target){
           return DATA.filter(it => it.group === target);
