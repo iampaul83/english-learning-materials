@@ -37,13 +37,16 @@
       margin: 0;                /* reset in case any default margins exist */
       pointer-events: none;     /* avoid shifting when tooltip/hover */
     }
+
+    /* iOS notch safe area for PWA/standalone */
+    .safe-top { padding-top: env(safe-area-inset-top); }
   </style>
 </head>
 <body class="bg-base-200 text-base-content">
   <!-- App Root -->
   <div x-data="app()" class="min-h-dvh flex flex-col">
     <!-- Header / 行動導覽列 -->
-    <header :class="{'shadow-md': scrolled, 'shadow-none': !scrolled}" class="navbar sticky top-0 z-30 bg-[#65c3c8] text-white transition-shadow">
+    <header :class="{'shadow-md': scrolled, 'shadow-none': !scrolled}" class="navbar sticky top-0 z-30 bg-[#65c3c8] text-white transition-shadow safe-top">
       <div class="flex-1 gap-2 pl-2">
         <div class="rounded-xl w-9 h-9 overflow-hidden">
           <img src="icons/icon-128x128.png" alt="App Icon" class="w-full h-full object-contain"/>
