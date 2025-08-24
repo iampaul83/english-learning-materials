@@ -9,7 +9,7 @@ const DATA = [
   {
     name: '故事',
     list: [
-      { name: 'Where Is Lulu', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2022101300000001&bd=1', video: '', note: '' },
+      { name: 'Where Is Lulu', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2022101300000001&bd=1', video: '', note: '影片請參考書本背後說明下載APP觀看' },
     ]
   },
 ];
