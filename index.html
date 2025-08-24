@@ -14,13 +14,31 @@
   <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 
   <title>2025 KC 英文教材影音資源</title>
+  <script>
+    // === 你的資料：直接在這裡編輯 ===
+    const DATA = [
+      {
+        name: '課本',
+        list: [
+          { name: 'Fun box Book A', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2021080200000001&bd=1', video: 'https://youtube.com/playlist?list=PLSwnJFlaFW6ypt7ipfxR23ZU5X3RFT-_e&si=iAxQhmRy7EEb9LTV', note: '' },
+        ]
+      },
+      {
+        name: '故事',
+        list: [
+          { name: 'Where Is Lulu', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2022101300000001&bd=1', video: '', note: '影片請參考書本背後說明下載APP觀看' },
+        ]
+      },
+    ];
+  </script>
+
+  
   <!-- Tailwind + daisyUI (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
   <link rel="manifest" href="manifest.webmanifest">
   <!-- Alpine.js (CDN) -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <script src="data.js"></script>
   <style>
     /* 額外微調：加大行動裝置點擊區域、字距 */
     html,body{height:100%}
@@ -94,7 +112,7 @@
                   <div class="flex-1 min-w-0">
                     <h2 class="card-title text-base leading-tight flex flex-wrap items-start gap-x-2 gap-y-1 my-0">
                       <span x-text="item.name"></span>
-                      <span class="block w-full text-xs text-gray-500 mt-0" x-text="item.note"></span>
+                      <span class="block w-full text-sm text-gray-500 mt-0" x-text="item.note"></span>
                     </h2>
                   </div>
                   <div class="flex items-center gap-2 self-center">
