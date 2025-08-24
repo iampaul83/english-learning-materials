@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="cupcake">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>英文學習資源</title>
+  <!-- Tailwind + daisyUI (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+  <!-- Alpine.js (CDN) -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    /* 額外微調：加大行動裝置點擊區域、字距 */
+    html,body{height:100%}
+    .tappable{min-height:44px}
+    .safe{padding-bottom:env(safe-area-inset-bottom)}
+
+    /* Fix: remove daisyUI default bottom margin on card titles */
+    .card .card-title,
+    .card-compact .card-title { margin-bottom: 0 !important; }
+    /* Fix: ensure SVGs inside circular buttons don't create baseline gaps */
+    .btn.btn-circle > svg { display: block; }
+
+    /* Ensure perfect centering for icons inside circular buttons */
+    .btn.btn-circle {
+      display: flex;            /* override inline-flex inconsistencies */
+      align-items: center;
+      justify-content: center;
+      line-height: 1;           /* remove extra line height */
+    }
+    .btn.btn-circle > svg {
+      display: block;           /* already set; keep for clarity */
+      margin: 0;                /* reset in case any default margins exist */
+      pointer-events: none;     /* avoid shifting when tooltip/hover */
+    }
+  </style>
+</head>
+<body class="bg-base-200 text-base-content">
+  <!-- App Root -->
+  <div x-data="app()" class="min-h-dvh flex flex-col">
+    <!-- Header / 行動導覽列 -->
+    <header class="navbar bg-base-100 shadow-sm sticky top-0 z-30">
+      <div class="flex-1 gap-2 pl-2">
+        <div class="avatar placeholder">
+          <div class="bg-primary text-primary-content rounded-xl w-9">📚</div>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold leading-tight">英文學習資源</h1>
+          <p class="text-xs opacity-70">加入主畫面可全螢幕瀏覽</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 px-3 pb-20 pt-3 space-y-6">
+      <!-- 課本組 -->
+      <section x-show="filtered('課本').length" x-cloak>
+        <div class="flex items-center gap-2 mb-2">
+          <div class="badge badge-primary badge-lg">課本</div>
+          <div class="text-xs opacity-70">共 <span x-text="filtered('課本').length"></span> 筆</div>
+        </div>
+        <template x-for="item in filtered('課本')" :key="item.id">
+          <article class="card card-compact bg-base-100 shadow-sm mb-3">
+            <div class="card-body py-3">
+              <div class="flex items-center gap-3">
+                <div class="flex-1 min-w-0">
+                  <h2 class="card-title text-base leading-tight flex flex-wrap items-center gap-x-2 gap-y-1 my-0">
+                    <span x-text="item.name"></span>
+                    <span class="text-sm opacity-70" x-text="item.note"></span>
+                  </h2>
+                </div>
+                <div class="flex items-center gap-2 self-center">
+                  <!-- Open button 優先影片，其次CD -->
+                  
+                  <!-- Icons -->
+                  <a :href="item.cd" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="CD" :class="{'pointer-events-none opacity-40': !item.cd}">
+                    <!-- Music note icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
+                      <path fill="currentColor" d="M12 3v10.55a4 4 0 1 0 2 3.45V7h4V3h-6z"/>
+                    </svg>
+                  </a>
+                  <a :href="item.video" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="影片" :class="{'pointer-events-none opacity-40': !item.video}">
+                    <!-- YouTube logo icon (balanced viewBox & path) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
+                      <path fill="currentColor" d="M23.498 6.186a2.99 2.99 0 0 0-2.106-2.116C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.392.57A2.99 2.99 0 0 0 .502 6.186 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .502 5.814 2.99 2.99 0 0 0 2.106 2.116C4.5 20.5 12 20.5 12 20.5s7.5 0 9.392-.57a2.99 2.99 0 0 0 2.106-2.116A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.502-5.814zM9.75 15.02V8.98L15.5 12z"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </template>
+      </section>
+
+      <!-- 故事組 -->
+      <section x-show="filtered('故事').length" x-cloak>
+        <div class="flex items-center gap-2 mb-2">
+          <div class="badge badge-secondary badge-lg">故事</div>
+          <div class="text-xs opacity-70">共 <span x-text="filtered('故事').length"></span> 筆</div>
+        </div>
+        <template x-for="item in filtered('故事')" :key="item.id">
+          <article class="card card-compact bg-base-100 shadow-sm mb-3">
+            <div class="card-body py-3">
+              <div class="flex items-center gap-3">
+                <div class="flex-1 min-w-0">
+                  <h2 class="card-title text-base leading-tight flex flex-wrap items-center gap-x-2 gap-y-1 my-0">
+                    <span x-text="item.name"></span>
+                    <span class="text-sm opacity-70" x-text="item.note"></span>
+                  </h2>
+                </div>
+                <div class="flex items-center gap-2 self-center">
+                  
+                  <a :href="item.cd" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="CD" :class="{'pointer-events-none opacity-40': !item.cd}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
+                      <path fill="currentColor" d="M12 3v10.55a4 4 0 1 0 2 3.45V7h4V3h-6z"/>
+                    </svg>
+                  </a>
+                  <a :href="item.video" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="影片" :class="{'pointer-events-none opacity-40': !item.video}">
+                    <!-- YouTube logo icon (balanced viewBox & path) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
+                      <path fill="currentColor" d="M23.498 6.186a2.99 2.99 0 0 0-2.106-2.116C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.392.57A2.99 2.99 0 0 0 .502 6.186 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .502 5.814 2.99 2.99 0 0 0 2.106 2.116C4.5 20.5 12 20.5 12 20.5s7.5 0 9.392-.57a2.99 2.99 0 0 0 2.106-2.116A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.502-5.814zM9.75 15.02V8.98L15.5 12z"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </template>
+      </section>
+
+      <!-- 空狀態 -->
+      <p x-show="!filtered('課本').length && !filtered('故事').length" class="text-center opacity-70 pt-10">沒有符合搜尋的項目</p>
+    </main>
+
+    <!-- Footer / PWA 提示區 -->
+    <footer class="safe px-4 py-3 text-center text-xs opacity-70">© 2025 英文學習資源</footer>
+  </div>
+
+  <script>
+    // === 你的資料：直接在這裡編輯 ===
+    const DATA = [
+      { id: 1, group: '課本', name: 'Fun box Book A', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2021080200000001&bd=1', video: 'https://youtube.com/playlist?list=PLSwnJFlaFW6ypt7ipfxR23ZU5X3RFT-_e&si=iAxQhmRy7EEb9LTV', note: ''},
+      { id: 2, group: '故事', name: 'Where Is Lulu', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2022101300000001&bd=1', video: '', note: '影片在KK雲學院APP'},
+    ];
+
+    function app(){
+      return {
+        filtered(target){
+          return DATA.filter(it => it.group === target);
+        }
+      }
+    }
+
+    // ====== PWA：以單檔方式動態產生 manifest 與 service worker ======
+    // 讓 Android 可「加入主畫面」，GitHub Pages 需 https。
+    (function setupPWA(){
+      const manifest = {
+        name: '英文學習資源',
+        short_name: '英文學習資源',
+        start_url: '.',
+        display: 'standalone',
+        background_color: '#0f172a',
+        theme_color: '#0f172a',
+        icons: [
+          { src: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><rect width=%22128%22 height=%22128%22 rx=%2224%22 fill=%22%230f172a%22/><text x=%2264%22 y=%2274%22 font-size=%2276%22 text-anchor=%22middle%22 fill=%22%23fff%22>📚</text></svg>', sizes: '128x128', type: 'image/svg+xml' }
+        ]
+      };
+      const mBlob = new Blob([JSON.stringify(manifest)], {type:'application/manifest+json'});
+      const mUrl = URL.createObjectURL(mBlob);
+      const link = document.createElement('link');
+      link.rel = 'manifest';
+      link.href = mUrl;
+      document.head.appendChild(link);
+
+      // 極簡 SW：只是為了符合安裝條件（不做快取）
+      if ('serviceWorker' in navigator) {
+        const swCode = `self.addEventListener('install', e=>self.skipWaiting());self.addEventListener('activate', e=>clients.claim());`;
+        const swBlob = new Blob([swCode], {type: 'text/javascript'});
+        const swUrl = URL.createObjectURL(swBlob);
+        navigator.serviceWorker.register(swUrl);
+      }
+    })();
+  </script>
+</body>
+</html>
