@@ -65,8 +65,14 @@
           <!-- <p class="text-xs text-white/80">加入主畫面可全螢幕瀏覽</p> -->
         </div>
       </div>
-      <div class="flex-none pr-2">
+      <div class="flex-none pr-2 flex gap-2">
         <button x-show="!installed" class="btn btn-sm bg-white/15 border-white/20 hover:bg-white/25 text-white" @click="openGuide()">安裝說明</button>
+        <button x-show="installed" class="btn btn-sm bg-white/15 border-white/20 hover:bg-white/25 text-white" @click="refreshPage()" aria-label="重新整理" title="重新整理">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 8 8h-2a6 6 0 1 1-6-6c1.38 0 2.63.47 3.62 1.26L13 10h7V3l-2.35 3.35z"/>
+          </svg>
+          <span class="sr-only">重新整理</span>
+        </button>
       </div>
     </header>
 
@@ -233,6 +239,19 @@
         },
         filtered(target){
           return DATA.filter(it => it.group === target);
+        }
+        ,
+        refreshPage(){
+          // iOS PWA 沒有瀏覽器UI，提供手動刷新
+          // 先嘗試觸發 SW 檢查（若存在），再重整
+          try {
+            navigator.serviceWorker?.getRegistration?.().then(reg => {
+              reg?.update?.();
+              setTimeout(() => { location.reload(); }, 150);
+            }).catch(() => { location.reload(); });
+          } catch (_) {
+            location.reload();
+          }
         }
       }
     }
