@@ -1,6 +1,6 @@
 {
-  "name": "英文學習資源",
-  "short_name": "學習資源",
+  "name": "2025 KC 英文教材影音資源",
+  "short_name": "KC 英文影音",
   "start_url": "./?source=pwa",
   "scope": "./",
   "display": "standalone",
