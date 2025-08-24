@@ -79,83 +79,45 @@
 
     <!-- Content -->
     <main class="flex-1 px-3 pb-20 pt-3 space-y-6">
-      <!-- 課本組 -->
-      <section x-show="filtered('課本').length" x-cloak>
-        <div class="flex items-center gap-2 mb-2">
-          <div class="badge badge-primary badge-lg">課本</div>
-          <div class="text-xs opacity-70">共 <span x-text="filtered('課本').length"></span> 筆</div>
-        </div>
-        <template x-for="(item, index) in filtered('課本')" :key="index">
-          <article class="card card-compact bg-base-100 shadow-sm mb-3">
-            <div class="card-body py-3">
-              <div class="flex items-center gap-3">
-                <div class="flex-1 min-w-0">
-                  <h2 class="card-title text-base leading-tight flex flex-wrap items-center gap-x-2 gap-y-1 my-0">
-                    <span x-text="item.name"></span>
-                    <span class="text-sm opacity-70" x-text="item.note"></span>
-                  </h2>
-                </div>
-                <div class="flex items-center gap-2 self-center">
-                  <!-- Open button 優先影片，其次CD -->
-                  
-                  <!-- Icons -->
-                  <a :href="item.cd" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="CD" :class="{'pointer-events-none opacity-40': !item.cd}">
-                    <!-- Music note icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
-                      <path fill="currentColor" d="M12 3v10.55a4 4 0 1 0 2 3.45V7h4V3h-6z"/>
-                    </svg>
-                  </a>
-                  <a :href="item.video" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="影片" :class="{'pointer-events-none opacity-40': !item.video}">
-                    <!-- YouTube logo icon (balanced viewBox & path) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
-                      <path fill="currentColor" d="M23.498 6.186a2.99 2.99 0 0 0-2.106-2.116C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.392.57A2.99 2.99 0 0 0 .502 6.186 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .502 5.814 2.99 2.99 0 0 0 2.106 2.116C4.5 20.5 12 20.5 12 20.5s7.5 0 9.392-.57a2.99 2.99 0 0 0 2.106-2.116A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.502-5.814zM9.75 15.02V8.98L15.5 12z"/>
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </article>
-        </template>
-      </section>
+      <!-- 依群組通用渲染（支援新版/舊版資料結構） -->
+      <template x-for="(group, gIndex) in groups()" :key="gIndex">
+        <section x-show="group.list && group.list.length" x-cloak>
+          <div class="flex items-center gap-2 mb-2">
+            <div class="badge badge-lg" :class="groupBadge(group.name)" x-text="group.name"></div>
+            <div class="text-xs opacity-70">共 <span x-text="group.list.length"></span> 筆</div>
+          </div>
 
-      <!-- 故事組 -->
-      <section x-show="filtered('故事').length" x-cloak>
-        <div class="flex items-center gap-2 mb-2">
-          <div class="badge badge-secondary badge-lg">故事</div>
-          <div class="text-xs opacity-70">共 <span x-text="filtered('故事').length"></span> 筆</div>
-        </div>
-        <template x-for="(item, index) in filtered('故事')" :key="index">
-          <article class="card card-compact bg-base-100 shadow-sm mb-3">
-            <div class="card-body py-3">
-              <div class="flex items-center gap-3">
-                <div class="flex-1 min-w-0">
-                  <h2 class="card-title text-base leading-tight flex flex-wrap items-center gap-x-2 gap-y-1 my-0">
-                    <span x-text="item.name"></span>
-                    <span class="text-sm opacity-70" x-text="item.note"></span>
-                  </h2>
-                </div>
-                <div class="flex items-center gap-2 self-center">
-                  
-                  <a :href="item.cd" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="CD" :class="{'pointer-events-none opacity-40': !item.cd}">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
-                      <path fill="currentColor" d="M12 3v10.55a4 4 0 1 0 2 3.45V7h4V3h-6z"/>
-                    </svg>
-                  </a>
-                  <a :href="item.video" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="影片" :class="{'pointer-events-none opacity-40': !item.video}">
-                    <!-- YouTube logo icon (balanced viewBox & path) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
-                      <path fill="currentColor" d="M23.498 6.186a2.99 2.99 0 0 0-2.106-2.116C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.392.57A2.99 2.99 0 0 0 .502 6.186 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .502 5.814 2.99 2.99 0 0 0 2.106 2.116C4.5 20.5 12 20.5 12 20.5s7.5 0 9.392-.57a2.99 2.99 0 0 0 2.106-2.116A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.502-5.814zM9.75 15.02V8.98L15.5 12z"/>
-                    </svg>
-                  </a>
+          <template x-for="(item, index) in group.list" :key="index">
+            <article class="card card-compact bg-base-100 shadow-sm mb-3">
+              <div class="card-body py-3">
+                <div class="flex items-center gap-3">
+                  <div class="flex-1 min-w-0">
+                    <h2 class="card-title text-base leading-tight flex flex-wrap items-center gap-x-2 gap-y-1 my-0">
+                      <span x-text="item.name"></span>
+                      <span class="text-sm opacity-70" x-text="item.note"></span>
+                    </h2>
+                  </div>
+                  <div class="flex items-center gap-2 self-center">
+                    <a :href="item.cd" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="CD" :class="{'pointer-events-none opacity-40': !item.cd}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
+                        <path fill="currentColor" d="M12 3v10.55a4 4 0 1 0 2 3.45V7h4V3h-6z"/>
+                      </svg>
+                    </a>
+                    <a :href="item.video" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="影片" :class="{'pointer-events-none opacity-40': !item.video}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
+                        <path fill="currentColor" d="M23.498 6.186a2.99 2.99 0 0 0-2.106-2.116C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.392.57A2.99 2.99 0 0 0 .502 6.186 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .502 5.814 2.99 2.99 0 0 0 2.106 2.116C4.5 20.5 12 20.5 12 20.5s7.5 0 9.392-.57a2.99 2.99 0 0 0 2.106-2.116A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.502-5.814zM9.75 15.02V8.98L15.5 12z"/>
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-          </article>
-        </template>
-      </section>
+            </article>
+          </template>
+        </section>
+      </template>
 
       <!-- 空狀態 -->
-      <p x-show="!filtered('課本').length && !filtered('故事').length" class="text-center opacity-70 pt-10">沒有符合搜尋的項目</p>
+      <p x-show="!hasAnyGroups()" class="text-center opacity-70 pt-10">沒有符合搜尋的項目</p>
     </main>
 
     <!-- 安裝說明 Modal（自訂覆蓋層，避免 daisyUI 自動關閉） -->
@@ -232,10 +194,20 @@
         openGuide() {
           this.guideOpen = true;
         },
-        filtered(target){
-          return DATA.filter(it => it.group === target);
-        }
-        ,
+        groups(){
+          return DATA;
+        },
+        hasAnyGroups(){
+          const gs = this.groups();
+          if (!gs.length) return false;
+          return gs.some(g => Array.isArray(g.list) && g.list.length > 0);
+        },
+        groupBadge(name){
+          // 可依名稱配色；未匹配則給中性樣式
+          if (name === '課本') return 'badge-primary';
+          if (name === '故事') return 'badge-secondary';
+          return 'badge-neutral';
+        },
         refreshPage(){
           // iOS PWA 沒有瀏覽器UI，提供手動刷新
           // 先嘗試觸發 SW 檢查（若存在），再重整
