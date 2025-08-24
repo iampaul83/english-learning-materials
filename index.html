@@ -98,12 +98,18 @@
                     </h2>
                   </div>
                   <div class="flex items-center gap-2 self-center">
-                    <a :href="item.cd" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="CD" :class="{'pointer-events-none opacity-40': !item.cd}">
+                    <a :href="item.cd" target="_blank" rel="noopener"
+                       class="btn btn-circle btn-outline btn-primary btn-sm tooltip shadow"
+                       aria-label="CD"
+                       :class="{'pointer-events-none opacity-40 grayscale': !item.cd}">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
                         <path fill="currentColor" d="M12 3v10.55a4 4 0 1 0 2 3.45V7h4V3h-6z"/>
                       </svg>
                     </a>
-                    <a :href="item.video" target="_blank" rel="noopener" class="btn btn-circle btn-ghost btn-sm tooltip" aria-label="影片" :class="{'pointer-events-none opacity-40': !item.video}">
+                    <a :href="item.video" target="_blank" rel="noopener"
+                       class="btn btn-circle btn-outline btn-error btn-sm tooltip shadow"
+                       aria-label="影片"
+                       :class="{'pointer-events-none opacity-40 grayscale': !item.video}">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
                         <path fill="currentColor" d="M23.498 6.186a2.99 2.99 0 0 0-2.106-2.116C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.392.57A2.99 2.99 0 0 0 .502 6.186 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .502 5.814 2.99 2.99 0 0 0 2.106 2.116C4.5 20.5 12 20.5 12 20.5s7.5 0 9.392-.57a2.99 2.99 0 0 0 2.106-2.116A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.502-5.814zM9.75 15.02V8.98L15.5 12z"/>
                       </svg>
