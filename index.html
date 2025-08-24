@@ -20,6 +20,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <!-- Alpine.js (CDN) -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="data.js"></script>
   <style>
     /* 額外微調：加大行動裝置點擊區域、字距 */
     html,body{height:100%}
@@ -84,7 +85,7 @@
           <div class="badge badge-primary badge-lg">課本</div>
           <div class="text-xs opacity-70">共 <span x-text="filtered('課本').length"></span> 筆</div>
         </div>
-        <template x-for="item in filtered('課本')" :key="item.id">
+        <template x-for="(item, index) in filtered('課本')" :key="index">
           <article class="card card-compact bg-base-100 shadow-sm mb-3">
             <div class="card-body py-3">
               <div class="flex items-center gap-3">
@@ -123,7 +124,7 @@
           <div class="badge badge-secondary badge-lg">故事</div>
           <div class="text-xs opacity-70">共 <span x-text="filtered('故事').length"></span> 筆</div>
         </div>
-        <template x-for="item in filtered('故事')" :key="item.id">
+        <template x-for="(item, index) in filtered('故事')" :key="index">
           <article class="card card-compact bg-base-100 shadow-sm mb-3">
             <div class="card-body py-3">
               <div class="flex items-center gap-3">
@@ -202,12 +203,6 @@
   </div>
 
   <script>
-    // === 你的資料：直接在這裡編輯 ===
-    const DATA = [
-      { id: 1, group: '課本', name: 'Fun box Book A', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2021080200000001&bd=1', video: 'https://youtube.com/playlist?list=PLSwnJFlaFW6ypt7ipfxR23ZU5X3RFT-_e&si=iAxQhmRy7EEb9LTV', note: ''},
-      { id: 2, group: '故事', name: 'Where Is Lulu', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2022101300000001&bd=1', video: '', note: '影片在KK雲學院APP'},
-    ];
-
     function app(){
       return {
         scrolled: false,
