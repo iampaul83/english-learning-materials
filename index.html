@@ -43,14 +43,14 @@
   <!-- App Root -->
   <div x-data="app()" class="min-h-dvh flex flex-col">
     <!-- Header / 行動導覽列 -->
-    <header class="navbar bg-base-100 shadow-sm sticky top-0 z-30">
+    <header :class="{'shadow-md': scrolled, 'shadow-none': !scrolled}" class="navbar sticky top-0 z-30 bg-[#65c3c8] text-white transition-shadow">
       <div class="flex-1 gap-2 pl-2">
-        <div class="avatar placeholder">
-          <div class="bg-primary text-primary-content rounded-xl w-9">📚</div>
+        <div class="rounded-xl w-9 h-9 overflow-hidden">
+          <img src="icons/icon-128x128.png" alt="App Icon" class="w-full h-full object-contain"/>
         </div>
         <div>
           <h1 class="text-lg font-bold leading-tight">英文學習資源</h1>
-          <p class="text-xs opacity-70">加入主畫面可全螢幕瀏覽</p>
+          <!-- <p class="text-xs text-white/80">加入主畫面可全螢幕瀏覽</p> -->
         </div>
       </div>
     </header>
@@ -149,6 +149,12 @@
 
     function app(){
       return {
+        scrolled: false,
+        init() {
+          window.addEventListener('scroll', () => {
+            this.scrolled = window.scrollY > 0;
+          });
+        },
         filtered(target){
           return DATA.filter(it => it.group === target);
         }
