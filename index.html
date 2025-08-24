@@ -237,35 +237,9 @@
       }
     }
 
-    // ====== Register Service Worker with versioning + update prompt ======
+    // ====== Register static Service Worker (scope: current folder) ======
     if ('serviceWorker' in navigator) {
-      // TODO: 每次部署更新這個版本字串（可用日期或 git commit hash）
-      const SW_VERSION = '2025-08-24-1';
-
-      navigator.serviceWorker.register(`./sw.js?v=${SW_VERSION}`, {
-        scope: './',
-        updateViaCache: 'none'
-      }).then((reg) => {
-        // 進頁主動檢查一次
-        reg.update().catch(() => {});
-
-        // 偵測到新版本（installing -> installed 且目前有舊 SW 控制頁面）
-        reg.addEventListener('updatefound', () => {
-          const nw = reg.installing;
-          if (!nw) return;
-          nw.addEventListener('statechange', () => {
-            if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-              // 直接更新：不提示，立刻切換到新 SW
-              reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
-            }
-          });
-        });
-      }).catch(console.error);
-
-      // 新版接手控制時重新載入頁面
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.location.reload();
-      });
+      navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(console.error);
     }
   </script>
 </body>
