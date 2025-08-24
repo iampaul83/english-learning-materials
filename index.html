@@ -40,6 +40,8 @@
 
     /* iOS notch safe area for PWA/standalone */
     .safe-top { padding-top: env(safe-area-inset-top); }
+
+    [x-cloak] { display: none !important; }
   </style>
 </head>
 <body class="bg-base-200 text-base-content">
@@ -57,7 +59,7 @@
         </div>
       </div>
       <div class="flex-none pr-2">
-        <button x-show="!installed" class="btn btn-sm bg-white/15 border-white/20 hover:bg-white/25 text-white" @click="guideOpen = true">安裝說明</button>
+        <button x-show="!installed" class="btn btn-sm bg-white/15 border-white/20 hover:bg-white/25 text-white" @click="openGuide()">安裝說明</button>
       </div>
     </header>
 
@@ -142,9 +144,10 @@
       <p x-show="!filtered('課本').length && !filtered('故事').length" class="text-center opacity-70 pt-10">沒有符合搜尋的項目</p>
     </main>
 
-    <!-- 安裝說明 Modal -->
-    <div class="modal" x-show="guideOpen" x-transition @keydown.escape.window="guideOpen=false">
-      <div class="modal-box max-w-md">
+    <!-- 安裝說明 Modal（自訂覆蓋層，避免 daisyUI 自動關閉） -->
+    <div x-cloak x-show="guideOpen" x-transition
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div class="bg-base-100 p-4 rounded-lg max-w-md w-11/12 shadow-lg">
         <h3 class="font-bold text-lg mb-2">安裝到主畫面</h3>
 
         <!-- 平台切換 -->
@@ -175,11 +178,10 @@
           <p class="text-xs opacity-70">若看不到選項，請向下捲動分享單中的項目。</p>
         </div>
 
-        <div class="modal-action">
+        <div class="flex justify-end mt-4">
           <button class="btn" @click="guideOpen=false">關閉</button>
         </div>
       </div>
-      <div class="modal-backdrop" @click="guideOpen=false"></div>
     </div>
 
     <!-- Footer / PWA 提示區 -->
@@ -218,6 +220,9 @@
             mq.addListener?.((e) => { this.installed = e.matches; });
           }
           window.addEventListener('appinstalled', () => { this.installed = true; });
+        },
+        openGuide() {
+          this.guideOpen = true;
         },
         filtered(target){
           return DATA.filter(it => it.group === target);
