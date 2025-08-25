@@ -20,13 +20,22 @@
       {
         name: '課本',
         list: [
-          { name: 'Fun box Book A', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2021080200000001&bd=1', video: 'https://youtube.com/playlist?list=PLSwnJFlaFW6ypt7ipfxR23ZU5X3RFT-_e&si=iAxQhmRy7EEb9LTV', note: '' },
+          { name: 'Fun Box - Book A', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2021080200000001&bd=1', video: 'https://youtube.com/playlist?list=PLSwnJFlaFW6ypt7ipfxR23ZU5X3RFT-_e&si=iAxQhmRy7EEb9LTV', note: '' },
+          { name: 'I Can Phonics - Book 1', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=201908150001&bd=1', video: null, note: '' },
+          { name: '生活Follow Me', cd: null, video: 'https://qr.knsh.com.tw/QB7QA', note: '' },
         ]
       },
       {
         name: '故事',
         list: [
           { name: 'Where Is Lulu', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2022101300000001&bd=1', video: '', note: '影片請參考書本背後說明下載APP觀看' },
+          { name: 'A Bad Man', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2022101300000002&bd=1', video: '', note: '影片請參考書本背後說明下載APP觀看' },
+        ]
+      },
+      {
+        name: '跳舞歌曲',
+        list: [
+          { name: 'KC1 - Sing Alone With Me', cd: null, video: 'https://youtu.be/R1Hrkqep8nU?feature=shared', note: '' },
         ]
       },
     ];
@@ -116,18 +125,24 @@
                     </h2>
                   </div>
                   <div class="flex items-center gap-2 self-center">
-                    <a :href="item.cd" target="_blank" rel="noopener"
+                    <a x-show="item.cd !== null"
+                       :href="item.cd"
+                       target="_blank"
+                       rel="noopener"
                        class="btn btn-circle btn-outline btn-primary btn-sm tooltip shadow"
                        aria-label="CD"
-                       :class="{'pointer-events-none opacity-40 grayscale': !item.cd}">
+                       :class="{'pointer-events-none opacity-40 grayscale': item.cd === ''}">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
                         <path fill="currentColor" d="M12 3v10.55a4 4 0 1 0 2 3.45V7h4V3h-6z"/>
                       </svg>
                     </a>
-                    <a :href="item.video" target="_blank" rel="noopener"
+                    <a x-show="item.video !== null"
+                       :href="item.video"
+                       target="_blank"
+                       rel="noopener"
                        class="btn btn-circle btn-outline btn-error btn-sm tooltip shadow"
                        aria-label="影片"
-                       :class="{'pointer-events-none opacity-40 grayscale': !item.video}">
+                       :class="{'pointer-events-none opacity-40 grayscale': item.video === ''}">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 block">
                         <path fill="currentColor" d="M23.498 6.186a2.99 2.99 0 0 0-2.106-2.116C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.392.57A2.99 2.99 0 0 0 .502 6.186 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .502 5.814 2.99 2.99 0 0 0 2.106 2.116C4.5 20.5 12 20.5 12 20.5s7.5 0 9.392-.57a2.99 2.99 0 0 0 2.106-2.116A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.502-5.814zM9.75 15.02V8.98L15.5 12z"/>
                       </svg>
