@@ -20,6 +20,24 @@
       {
         name: '課本',
         list: [
+          { name: 'Fun Box - Book B', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2022102600000001&bd=1', video: 'https://youtube.com/playlist?list=PLSwnJFlaFW6yOgR7yUrOd8rDyfWXWDtKr&si=cS9iQrba6fG0ZT7y', note: '' },
+          { name: 'I Can Phonics - Book 2', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=201908150002&bd=1', video: null, note: '' },
+        ]
+      },
+      {
+        name: '故事',
+        list: [
+          { name: 'Friendship', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2022101300000005&bd=1', video: null, note: '' },
+          { name: 'Busy Bees', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2022101300000004&bd=1', video: null, note: '' },
+        ]
+      },
+      {
+        name: '↓↓ 上學期 ↓↓',
+        list: []
+      },
+      {
+        name: '課本',
+        list: [
           { name: 'Fun Box - Book A', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=2021080200000001&bd=1', video: 'https://youtube.com/playlist?list=PLSwnJFlaFW6ypt7ipfxR23ZU5X3RFT-_e&si=iAxQhmRy7EEb9LTV', note: '' },
           { name: 'I Can Phonics - Book 1', cd: 'http://hkaudioapis.ckwashington.com:81/web/#/cdselect?bid=201908150001&bd=1', video: null, note: '' },
           { name: '生活Follow Me', cd: null, video: 'https://qr.knsh.com.tw/QB7QA', note: '' },
@@ -122,7 +140,7 @@
     <main class="flex-1 px-3 pb-20 pt-3 space-y-6">
       <!-- 依群組通用渲染（支援新版/舊版資料結構） -->
       <template x-for="(group, gIndex) in groups()" :key="gIndex">
-        <section x-show="group.list && group.list.length" x-cloak>
+        <section x-show="group.list" x-cloak>
           <div class="flex items-center gap-2 mb-2">
             <div class="badge badge-lg" :class="groupBadge(group.name)" x-text="group.name"></div>
             <div class="text-xs opacity-70">共 <span x-text="group.list.length"></span> 筆</div>
